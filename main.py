@@ -43,7 +43,7 @@ class Banana:
     def __init__(self, shots, obstacle_positions, box_position):
         self.position = self.generate_position(obstacle_positions, box_position)
         self.velocity = (0, 0)  # Initial velocity
-        self.is_golden = shots <= 1 and random.randint(1, 100) == 1
+        self.is_golden = shots <= 1 and random.randint(1, 20) == 1 # 1 in 20 chance of being golden banana
 
     def generate_position(self, obstacle_positions, box_position):
         position = (random.randint(0, SCREEN_WIDTH-100), random.randint(0, SCREEN_HEIGHT-100))
@@ -226,10 +226,11 @@ class Game:
             if distance < GRID_CELL_SIZE // 2:
                 return 'obstacle'
         # Convert the box's position from grid cells to pixels
-        box_position_pixels = (self.level.box_position[0] * GRID_CELL_SIZE, self.level.box_position[1] * GRID_CELL_SIZE)
+        box_position_pixels = ((self.level.box_position[0] * GRID_CELL_SIZE) + GRID_CELL_SIZE // 2,
+                               (self.level.box_position[1] * GRID_CELL_SIZE) + GRID_CELL_SIZE // 2)
         distance = math.sqrt((self.current_banana.position[0] - box_position_pixels[0]) ** 2 + (
                     self.current_banana.position[1] - box_position_pixels[1]) ** 2)
-        if distance < GRID_CELL_SIZE:
+        if distance < GRID_CELL_SIZE // 2:
             return 'box'
         return None
 
