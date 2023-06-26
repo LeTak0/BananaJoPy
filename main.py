@@ -154,8 +154,12 @@ class Menu:
             screen.fill((0, 0, 0))  # Clear the screen
             pygame.draw.rect(screen, (255, 0, 0), pygame.Rect(100, 100, 200, 100))  # Draw the "Start New Game" button
             pygame.draw.rect(screen, (0, 255, 0), pygame.Rect(100, 300, 200, 100))  # Draw the "Continue Game" button
-            screen.blit(start_game_text, (150, 130))  # Draw the "Start New Game" text
-            screen.blit(continue_game_text, (150, 330))  # Draw the "Continue Game" text
+            start_game_text_pos = (
+            100 + (200 - start_game_text.get_width()) / 2, 100 + (100 - start_game_text.get_height()) / 2)
+            continue_game_text_pos = (
+            100 + (200 - continue_game_text.get_width()) / 2, 300 + (100 - continue_game_text.get_height()) / 2)
+            screen.blit(start_game_text, start_game_text_pos)  # Draw the "Start New Game" text
+            screen.blit(continue_game_text, continue_game_text_pos)  # Draw the "Continue Game" text
             pygame.display.flip()  # Update the display
 
         # After the menu loop is exited, start the game loop based on the game state
