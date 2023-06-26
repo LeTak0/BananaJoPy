@@ -140,7 +140,7 @@ class Menu:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     running = False
-                elif event.type == pygame.MOUSEBUTTONDOWN:
+                elif event.type == pygame.MOUSEBUTTONUP:
                     mouse_pos = pygame.mouse.get_pos()
                     # Check if the mouse click was within the bounds of the "Start New Game" button
                     if 100 <= mouse_pos[0] <= 300 and 100 <= mouse_pos[1] <= 200:
