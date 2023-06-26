@@ -344,7 +344,7 @@ class Game:
                 self.menu.display_menu(self.screen)
             elif collision == 'box':
                 # If the banana hit the box, update the score and generate a new level
-                self.update_score(1 if not self.current_banana.is_golden else 5)
+                self.update_score(1)
                 self.player.update_level() # Update the player's level
                 self.generate_level()
 
@@ -361,6 +361,6 @@ class Game:
 if __name__ == "__main__":
     game = Game()
     game.menu.display_menu(game.screen)
-   # game.menu.start_new_game(game)
+    #game.menu.start_new_game(game)
     #game.start_game()
 
