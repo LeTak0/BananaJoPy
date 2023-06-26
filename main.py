@@ -105,6 +105,7 @@ class Player:
     def __init__(self):
         self.score = 0  # Initial score
         self.level = 1  # Initial level
+        self.shots = 0  # Initial shot count
 
     def update_score(self, points):
         # Add the given number of points to the player's score
@@ -113,6 +114,10 @@ class Player:
     def update_level(self):
         # Increase the level by 1
         self.level += 1
+
+    def update_shots(self):
+        # Increase the shot count by 1
+        self.shots += 1
 
 
 class Menu:
@@ -148,6 +153,7 @@ class Game:
         self.clock = pygame.time.Clock()  # Create a clock object to control the frame rate
         self.current_banana = Banana()
         self.player = Player()
+        self.level_time = 100  # Initial level time
         self.level = Level(grid_size=8)
         self.menu = Menu()
 
@@ -158,6 +164,11 @@ class Game:
 
     def pause_game(self):
         self.menu.game_state = 'paused'
+
+    def shoot_banana(self, mouse_drag):
+        # Shoot the banana
+        self.current_banana.shoot(mouse_drag)
+        self.player.update_shots()  # Increase the shot count by 1
 
     def resume_game(self):
         if self.menu.game_state == 'paused':
@@ -185,6 +196,13 @@ class Game:
         return None
 
     def update_score(self, points):
+        # Calculate the points based on the time and shot count
+        if self.level_time > 0:
+            points = self.level_time / self.player.shots
+        else:
+            points = 1
+        if self.current_banana.is_golden:
+            points *= 2
         self.player.update_score(points)
 
     def generate_level(self):
@@ -192,6 +210,8 @@ class Game:
         self.level.generate_box()
         self.level.generate_obstacles(num_obstacles=5)
         self.current_banana.respawn()
+        self.level_time = 100  # Reset the level time
+        self.player.shots = 0  # Reset the shot count
 
     def draw_banana(self):
         pixel_position = (self.current_banana.position[0], self.current_banana.position[1])
@@ -208,8 +228,10 @@ class Game:
 
     def draw_text(self):
         font = pygame.font.Font(None, 36)  # Choose the font for the text
-        text = font.render(f"Level: {self.player.level} Score: {self.player.score}", 1,
-                           (255, 255, 255))  # Create the text
+        text = font.render(
+            f"Level: {self.player.level} Score: {int(self.player.score)} Time: {int(self.level_time)} Shots: {self.player.shots}",
+            1, (255, 255, 255)) # Create the text surface
+
         textpos = text.get_rect(centerx=self.screen.get_width() / 2,
                                 y=self.screen.get_height() - 20)  # Position the text
         self.screen.blit(text, textpos)  # Draw the text on the screen
@@ -218,6 +240,11 @@ class Game:
         mouse_down_pos = None  # Variable to store the position where the mouse button was pressed
         running = True
         while running:
+            # Calculate the time since the last frame
+            dt = self.clock.tick(60) / 1000  # This gives the time in seconds
+
+            # Decrement the level time by the time since the last frame
+            self.level_time -= dt
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     print("QUIT event triggered")
@@ -230,7 +257,8 @@ class Game:
                     mouse_drag = (
                         pygame.mouse.get_pos()[0] - mouse_down_pos[0], pygame.mouse.get_pos()[1] - mouse_down_pos[1])
                     # Shoot the banana
-                    self.current_banana.shoot(mouse_drag)
+                    #self.current_banana.shoot(mouse_drag)
+                    self.shoot_banana(mouse_drag)
 
             # Update the banana's position
             self.current_banana.update_position()
