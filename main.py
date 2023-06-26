@@ -189,7 +189,7 @@ class Game:
         self.level_time = 100  # Initial level time
         self.level = Level(grid_size=8)
         self.current_banana = Banana(self.player.shots, self.level.obstacle_positions, self.level.box_position)
-        self.menu = Menu()
+        self.menu = Menu(self)
 
     def start_game(self):
         self.level.generate_box()
