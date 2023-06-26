@@ -283,7 +283,7 @@ class Game:
         self.screen.blit(text, textpos)  # Draw the text on the screen
 
     def game_loop(self):
-        mouse_down_pos = None  # Variable to store the position where the mouse button was pressed
+        mouse_down_pos = (0, 0)  # Variable to store the position where the mouse button was pressed
         running = True
         while running:
             # Calculate the time since the last frame
