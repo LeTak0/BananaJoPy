@@ -145,6 +145,7 @@ class Menu:
                     # Check if the mouse click was within the bounds of the "Start New Game" button
                     if 100 <= mouse_pos[0] <= 300 and 100 <= mouse_pos[1] <= 200:
                         self.game_state = 'new game'
+                        self.game.reset_game()
                         running = False  # Exit the menu loop
                     # Check if the mouse click was within the bounds of the "Continue Game" button
                     elif 100 <= mouse_pos[0] <= 300 and 300 <= mouse_pos[1] <= 400:
@@ -242,6 +243,9 @@ class Game:
         self.player = Player()
         self.current_banana = None
         self.shots = 0
+        self.score = 0
+        self.level = 1
+        self.velocity = 0
         self.generate_level()
 
     def check_collision(self):
