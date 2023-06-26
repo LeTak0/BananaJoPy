@@ -164,6 +164,24 @@ class Menu:
         elif self.game_state == 'continue game':
             self.game.resume_game()
 
+    def display_game_over(self, screen, player):
+        running = True
+        font = pygame.font.Font(None, 36)
+        game_over_text = font.render("Game Over", 1, (255, 255, 255))
+        score_text = font.render(f"High Score: {int(player.score)}", 1, (255, 255, 255))
+        level_text = font.render(f"Level: {player.level}", 1, (255, 255, 255))
+        while running:
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    running = False
+                elif event.type == pygame.MOUSEBUTTONUP:
+                    running = False
+            screen.fill((0, 0, 0))
+            screen.blit(game_over_text, (screen.get_width() // 2 - game_over_text.get_width() // 2, screen.get_height() // 2 - game_over_text.get_height() // 2))
+            screen.blit(score_text, (screen.get_width() // 2 - score_text.get_width() // 2, screen.get_height() // 2 - game_over_text.get_height() // 2 + 50))
+            screen.blit(level_text, (screen.get_width() // 2 - level_text.get_width() // 2, screen.get_height() // 2 - game_over_text.get_height() // 2 + 100))
+            pygame.display.flip()
+
     def start_new_game(self, game):
         # Start a new game
         game.start_game()
@@ -314,8 +332,9 @@ class Game:
             collision = self.check_collision()
             if collision == 'obstacle':
                 print("Obstacle collision detected")
-                # If the banana hit an obstacle, end the game
-                running = False
+                # If the banana hit an obstacle, display the game over screen and return to the menu
+                self.menu.display_game_over(self.screen, self.player)
+                self.menu.display_menu(self.screen)
             elif collision == 'box':
                 # If the banana hit the box, update the score and generate a new level
                 self.update_score(1 if not self.current_banana.is_golden else 5)
