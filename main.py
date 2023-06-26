@@ -233,6 +233,12 @@ class Game:
     def end_game(self):
         self.menu.game_state = 'end game'
 
+    def reset_game(self):
+        self.level = Level()
+        self.player = Player()
+        self.current_banana = None
+        self.shots = 0
+
     def check_collision(self):
         # Check if the banana has collided with an obstacle or the box
         for obstacle_position in self.level.obstacle_positions:
@@ -331,9 +337,9 @@ class Game:
             # Check for collisions
             collision = self.check_collision()
             if collision == 'obstacle':
-                print("Obstacle collision detected")
                 # If the banana hit an obstacle, display the game over screen and return to the menu
                 self.menu.display_game_over(self.screen, self.player)
+                self.reset_game()
                 self.menu.display_menu(self.screen)
             elif collision == 'box':
                 # If the banana hit the box, update the score and generate a new level
