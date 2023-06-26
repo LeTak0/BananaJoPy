@@ -318,7 +318,6 @@ class Game:
         while running:
             # Calculate the time since the last frame
             dt = self.clock.tick(60) / 1000  # This gives the time in seconds
-
             # Decrement the level time by the time since the last frame
             self.level_time -= dt
             for event in pygame.event.get():
@@ -333,12 +332,13 @@ class Game:
                     mouse_drag = (
                         pygame.mouse.get_pos()[0] - mouse_down_pos[0], pygame.mouse.get_pos()[1] - mouse_down_pos[1])
                     # Shoot the banana
-                    #self.current_banana.shoot(mouse_drag)
+                    # self.current_banana.shoot(mouse_drag)
                     self.shoot_banana(mouse_drag)
-
+                elif event.type == pygame.KEYDOWN:  # New event type for key presses
+                    if event.key == pygame.K_p:  # If the 'P' key is pressed
+                        self.menu.display_menu(self.screen)  # Display the menu
             # Update the banana's position
             self.current_banana.update_position()
-
             # Check for collisions
             collision = self.check_collision()
             if collision == 'obstacle':
@@ -349,9 +349,8 @@ class Game:
             elif collision == 'box':
                 # If the banana hit the box, update the score and generate a new level
                 self.update_score(1)
-                self.player.update_level() # Update the player's level
+                self.player.update_level()  # Update the player's level
                 self.generate_level()
-
             # Render the game
             self.screen.fill((0, 0, 0))  # Clear the screen
             self.draw_banana()  # Draw the banana
