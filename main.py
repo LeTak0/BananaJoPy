@@ -57,7 +57,6 @@ class Banana:
 
     def shoot(self, mouse_drag):
         # Calculate the new velocity based on the mouse drag
-        # This is a simple implementation, you may need to adjust it based on your game's physics
         scaling_factor = 0.01  # Adjust this value to change the speed of the banana
         self.velocity = (-mouse_drag[0] * scaling_factor, -mouse_drag[1] * scaling_factor)
 
@@ -77,7 +76,7 @@ class Banana:
         self.position = (self.position[0] + self.velocity[0], self.position[1] + self.velocity[1])
 
         # Apply damping (reduce the velocity)
-        damping_factor = 0.99  # Adjust this value to change how quickly the banana slows down
+        damping_factor = 0.99  # how quickly the banana slows down
         self.velocity = (self.velocity[0] * damping_factor, self.velocity[1] * damping_factor)
 
 
@@ -239,7 +238,7 @@ class Game:
         self.current_banana = None
         self.shots = 0
         self.generate_level()
-        
+
 
     def check_collision(self):
         # Check if the banana has collided with an obstacle or the box
