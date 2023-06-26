@@ -245,6 +245,7 @@ class Game:
         self.shots = 0
         self.score = 0
         self.level = 1
+        self.level_time = 100
         self.velocity = 0
         self.generate_level()
 
@@ -322,6 +323,7 @@ class Game:
         while running:
             # Calculate the time since the last frame
             dt = self.clock.tick(60) / 1000  # This gives the time in seconds
+            # print("Actual FPS: ", self.clock.get_fps())
             # Decrement the level time by the time since the last frame
             self.level_time -= dt
             for event in pygame.event.get():
