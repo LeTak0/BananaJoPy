@@ -1,7 +1,8 @@
 import pygame
-import sys
 import random
 import math
+
+# Define some constants
 GRID_CELL_SIZE = 50  # Size of each cell in the grid
 SCREEN_WIDTH = 1920  # Width of the screen in pixels
 SCREEN_HEIGHT = 1020  # Height of the screen in pixels
@@ -103,10 +104,15 @@ class Box:
 class Player:
     def __init__(self):
         self.score = 0  # Initial score
+        self.level = 1  # Initial level
 
     def update_score(self, points):
         # Add the given number of points to the player's score
         self.score += points
+
+    def update_level(self):
+        # Increase the level by 1
+        self.level += 1
 
 
 class Menu:
@@ -200,6 +206,14 @@ class Game:
             pixel_position = (obstacle_position[0] * GRID_CELL_SIZE, obstacle_position[1] * GRID_CELL_SIZE)
             pygame.draw.rect(self.screen, (0, 255, 0), pygame.Rect(pixel_position[0], pixel_position[1], 50, 50))
 
+    def draw_text(self):
+        font = pygame.font.Font(None, 36)  # Choose the font for the text
+        text = font.render(f"Level: {self.player.level} Score: {self.player.score}", 1,
+                           (255, 255, 255))  # Create the text
+        textpos = text.get_rect(centerx=self.screen.get_width() / 2,
+                                y=self.screen.get_height() - 20)  # Position the text
+        self.screen.blit(text, textpos)  # Draw the text on the screen
+
     def game_loop(self):
         mouse_down_pos = None  # Variable to store the position where the mouse button was pressed
         running = True
@@ -230,6 +244,7 @@ class Game:
             elif collision == 'box':
                 # If the banana hit the box, update the score and generate a new level
                 self.update_score(1 if not self.current_banana.is_golden else 5)
+                self.player.update_level() # Update the player's level
                 self.generate_level()
 
             # Render the game
@@ -237,6 +252,7 @@ class Game:
             self.draw_banana()  # Draw the banana
             self.draw_box()  # Draw the box
             self.draw_obstacles()  # Draw the obstacles
+            self.draw_text()  # Draw the text
             pygame.display.flip()  # Update the display
             self.clock.tick(60)  # Limit the frame rate to 60 FPS
 
