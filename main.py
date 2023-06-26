@@ -234,10 +234,12 @@ class Game:
         self.menu.game_state = 'end game'
 
     def reset_game(self):
-        self.level = Level()
+        self.level = Level(15)
         self.player = Player()
         self.current_banana = None
         self.shots = 0
+        self.generate_level()
+        
 
     def check_collision(self):
         # Check if the banana has collided with an obstacle or the box
