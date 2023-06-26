@@ -7,6 +7,7 @@ GRID_CELL_SIZE = 50  # Size of each cell in the grid
 SCREEN_WIDTH = 1920  # Width of the screen in pixels
 SCREEN_HEIGHT = 1020  # Height of the screen in pixels
 
+
 class Level:
     def __init__(self, grid_size):
         self.grid = [[0 for _ in range(grid_size)] for _ in range(grid_size)]
@@ -238,7 +239,6 @@ class Game:
         self.current_banana = None
         self.shots = 0
         self.generate_level()
-
 
     def check_collision(self):
         # Check if the banana has collided with an obstacle or the box
